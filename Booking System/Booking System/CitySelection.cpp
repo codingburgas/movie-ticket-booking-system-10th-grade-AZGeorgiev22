@@ -1,5 +1,6 @@
 #include <iostream>
 #include "citySelection.h"
+#include "HallSelection.h" 
 
 void selectCinemasInSofia() {
     int cinemaChoice;
@@ -14,12 +15,15 @@ void selectCinemasInSofia() {
     switch (cinemaChoice) {
     case 1:
         std::cout << "You chose Cinema City!" << std::endl;
+        selectHallInCinemaCitySofia();
         break;
     case 2:
         std::cout << "You chose Arena Cinema!" << std::endl;
+        selectHallInArenaCinema(); 
         break;
     case 3:
         std::cout << "You chose Cine Grand!" << std::endl;
+        selectHallInCineGrand(); 
         break;
     default:
         std::cout << "Invalid choice! Please select a valid cinema." << std::endl;
@@ -39,9 +43,11 @@ void selectCinemasInPlovdiv() {
     switch (cinemaChoice) {
     case 1:
         std::cout << "You chose Cinema City Plovdiv!" << std::endl;
+        selectHallInCinemaCityBurgas(); 
         break;
     case 2:
         std::cout << "You chose Lucky Cinema!" << std::endl;
+        selectHallInLuckyCinema(); 
         break;
     default:
         std::cout << "Invalid choice! Please select a valid cinema." << std::endl;
@@ -61,9 +67,11 @@ void selectCinemasInVarna() {
     switch (cinemaChoice) {
     case 1:
         std::cout << "You chose Cinema City Varna!" << std::endl;
+        selectHallInCinemaCityVarna(); 
         break;
     case 2:
         std::cout << "You chose G8 Cinema!" << std::endl;
+        selectHallInG8Cinema(); 
         break;
     default:
         std::cout << "Invalid choice! Please select a valid cinema." << std::endl;
@@ -83,9 +91,11 @@ void selectCinemasInBurgas() {
     switch (cinemaChoice) {
     case 1:
         std::cout << "You chose Cinema City Burgas!" << std::endl;
+        selectHallInCinemaCityBurgas(); 
         break;
     case 2:
         std::cout << "You chose Arena Burgas!" << std::endl;
+        selectHallInArenaCinema(); 
         break;
     default:
         std::cout << "Invalid choice! Please select a valid cinema." << std::endl;
@@ -100,32 +110,27 @@ void selectCinemasInRuse() {
     std::cout << "1. Cinema City Ruse" << std::endl;
     std::cout << "2. Ruse Cinema" << std::endl;
 
+    std::cin >> cinemaChoice;
 
-    while (true) {
-        std::cin >> cinemaChoice;
-
-        if (cinemaChoice >= 1 && cinemaChoice <= 2) {
-            switch (cinemaChoice) {
-            case 1:
-                std::cout << "You chose Cinema City Ruse!" << std::endl;
-                break;
-            case 2:
-                std::cout << "You chose Ruse Cinema!" << std::endl;
-                break;
-           
-            }
-        }
-        else {
-            std::cout << "Invalid choice! Please enter a number between 1 and 3." << std::endl;
-
-        }
+    switch (cinemaChoice) {
+    case 1:
+        std::cout << "You chose Cinema City Ruse!" << std::endl;
+        selectHallInCinemaCityRuse(); 
+        break;
+    case 2:
+        std::cout << "You chose Ruse Cinema!" << std::endl;
+        selectHallInRuseCinema(); 
+        break;
+    default:
+        std::cout << "Invalid choice! Please select a valid cinema." << std::endl;
+        break;
     }
 }
 
 void selectCity() {
     int cityChoice;
 
-    while (true) { 
+    while (true) {
         std::cout << "Choose a city in Bulgaria by entering a number (1-5):" << std::endl;
         std::cout << "1. Sofia" << std::endl;
         std::cout << "2. Plovdiv" << std::endl;
@@ -138,25 +143,24 @@ void selectCity() {
         if (cityChoice >= 1 && cityChoice <= 5) {
             switch (cityChoice) {
             case 1:
-                selectCinemasInSofia(); 
+                selectCinemasInSofia();
                 break;
             case 2:
                 selectCinemasInPlovdiv();
                 break;
             case 3:
-                selectCinemasInVarna(); 
+                selectCinemasInVarna();
                 break;
             case 4:
-                selectCinemasInBurgas(); 
+                selectCinemasInBurgas();
                 break;
             case 5:
-                selectCinemasInRuse(); 
+                selectCinemasInRuse();
                 break;
             }
-            break; 
+            break;
         }
         else {
-            system("CLS");
             std::cout << "Invalid choice! Please enter a number between 1 and 5." << std::endl;
         }
     }

@@ -1,4 +1,5 @@
 #pragma once
+
 void selectCity();
 void selectCinemasInSofia();
 void selectCinemasInPlovdiv();
