@@ -18,7 +18,7 @@ void handleUserAuthentication() {
             cin >> username;
             cout << "Enter new password: ";
             cin >> password;
-
+            system("cls");
             ofstream outFile("users.txt", ios::app);
             if (!outFile) {
                 cout << "Error opening file!" << endl;
@@ -35,6 +35,7 @@ void handleUserAuthentication() {
             cin >> username;
             cout << "Enter password: ";
             cin >> password;
+            system("cls");
 
             ifstream inFile("users.txt");
             if (!inFile) {

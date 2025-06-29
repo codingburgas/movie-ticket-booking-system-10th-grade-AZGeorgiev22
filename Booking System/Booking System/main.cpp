@@ -11,6 +11,8 @@ int main() {
         std::cout << "\nMenu:\n1. Select Cinema & Make Reservation\n2. Search Movies\n3. Exit\nChoose an option: ";
         int option;
         std::cin >> option;
+        system("cls");
+
 
         if (option == 1) {
             cinemaSelector.selectCinema();

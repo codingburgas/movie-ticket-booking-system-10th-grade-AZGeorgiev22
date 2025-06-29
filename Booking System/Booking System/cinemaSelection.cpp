@@ -82,6 +82,7 @@ void CinemaSelection::selectCinema() {
     std::cout << "Enter the number of the cinema you'd like to select: ";
     int choice;
     std::cin >> choice;
+    system("cls");
 
     if (choice > 0 && static_cast<size_t>(choice) <= cinemaList.size()) {
         selectedCinemaIndex = choice - 1;
@@ -134,6 +135,7 @@ bool CinemaSelection::makeReservation() {
 
     std::cout << "Select a movie by number (1-" << hall.screenings.size() << "): ";
     std::cin >> movieChoice;
+    system("cls");
     if (movieChoice < 1 || static_cast<size_t>(movieChoice) > hall.screenings.size()) {
         std::cout << "Invalid movie choice.\n";
         return false;
@@ -146,6 +148,7 @@ bool CinemaSelection::makeReservation() {
     std::cout << "2. Card (Pay now)\n";
     int paymentOption;
     std::cin >> paymentOption;
+    system("cls");
 
     std::string paymentMethod;
     if (paymentOption == 1) {
