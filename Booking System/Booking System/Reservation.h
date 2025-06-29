@@ -8,6 +8,7 @@ struct Reservation {
     std::string cinemaName;
     std::string hallName;
     Screening screening;
+    std::string paymentMethod;
 };
 
 #endif // RESERVATION_H

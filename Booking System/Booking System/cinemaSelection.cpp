@@ -141,19 +141,50 @@ bool CinemaSelection::makeReservation() {
 
     Screening selectedScreening = hall.screenings[movieChoice - 1];
 
-    currentReservation.cinemaName = cinema.name;
-    currentReservation.hallName = hall.hallName;
-    currentReservation.screening = selectedScreening;
+    std::cout << "\nChoose payment method:\n";
+    std::cout << "1. Cash (Pay at cinema)\n";
+    std::cout << "2. Card (Pay now)\n";
+    int paymentOption;
+    std::cin >> paymentOption;
 
-    std::cout << "\nReservation confirmed!\n";
+    std::string paymentMethod;
+    if (paymentOption == 1) {
+        paymentMethod = "Cash";
+        std::cout << "Payment will be made at the cinema. Reservation held.\n";
+    }
+    else if (paymentOption == 2) {
+        std::string cardNumber, expiryDate, cvv;
+        std::cin.ignore();
+        std::cout << "Enter card number: ";
+        std::getline(std::cin, cardNumber);
+        std::cout << "Enter expiry date (MM/YY): ";
+        std::getline(std::cin, expiryDate);
+        std::cout << "Enter CVV: ";
+        std::getline(std::cin, cvv);
+        paymentMethod = "Card";
+        std::cout << "Payment successful. Reservation confirmed.\n";
+    }
+    else {
+        std::cout << "Invalid payment method.\n";
+        return false;
+    }
+
+    currentReservation = {
+        cinema.name,
+        hall.hallName,
+        selectedScreening,
+        paymentMethod
+    };
+
+    std::cout << "\nReservation Summary:\n";
     std::cout << "Cinema: " << currentReservation.cinemaName << '\n';
     std::cout << "Hall: " << currentReservation.hallName << '\n';
     std::cout << "Movie: " << currentReservation.screening.movieTitle << '\n';
     std::cout << "Time: " << currentReservation.screening.showTime << '\n';
+    std::cout << "Payment Method: " << currentReservation.paymentMethod << '\n';
 
     return true;
 }
-
 std::string CinemaSelection::getSelectedCinemaName() const {
     if (selectedCinemaIndex >= 0 && selectedCinemaIndex < static_cast<int>(cinemaList.size())) {
         return cinemaList[selectedCinemaIndex].name;
