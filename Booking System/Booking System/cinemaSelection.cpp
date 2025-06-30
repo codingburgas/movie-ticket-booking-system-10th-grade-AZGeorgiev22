@@ -148,17 +148,17 @@ void CinemaSelection::displayScreenings() const {
 
 void CinemaSelection::displaySeatingChart(const Screening& screening) const {
     std::cout << "\nSeating Chart ('A' = Available, 'R' = Reserved):\n";
-    std::cout << "   ";
+    std::cout << "    "; // Extra space for alignment
     for (size_t col = 0; col < screening.seatingArrangement[0].size(); ++col) {
-        std::cout << col + 1 << "  ";
+        std::cout << std::setw(3) << col + 1; // Use setw to set a fixed width for each column number
     }
     std::cout << "\n";
 
     for (size_t row = 0; row < screening.seatingArrangement.size(); ++row) {
-        // Display only the row number
-        std::cout << "R" << row + 1 << " ";
+        // Display only the row number with a fixed width for alignment
+        std::cout << "R" << std::setw(2) << row + 1 << " ";
         for (size_t col = 0; col < screening.seatingArrangement[row].size(); ++col) {
-            std::cout << " " << screening.seatingArrangement[row][col].status << " ";
+            std::cout << "  " << screening.seatingArrangement[row][col].status;
         }
         // Display ticket type and price at the end of the line
         std::cout << "  - " << screening.seatingArrangement[row][0].ticketType << " ($" << std::fixed << std::setprecision(2) << screening.seatingArrangement[row][0].price << ")\n";
