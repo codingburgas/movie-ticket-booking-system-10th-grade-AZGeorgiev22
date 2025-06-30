@@ -2,13 +2,26 @@
 #include <iostream>
 #include <algorithm>
 #include <limits> // For std::numeric_limits
+#include <iomanip> // For std::fixed and std::setprecision
 
-// Helper function to initialize a seating arrangement
+// Helper function to initialize a seating arrangement with ticket types and prices
 void CinemaSelection::initializeSeating(Screening& screening, int rows, int cols) {
     screening.seatingArrangement.resize(rows, std::vector<Seat>(cols));
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < cols; ++c) {
-            screening.seatingArrangement[r][c] = Seat(r + 1, c + 1, 'A'); // 'A' for Available
+            std::string ticketType = "Silver";
+            double price = 10.0;
+
+            if (r + 1 == 3) {
+                ticketType = "Platinum";
+                price = 20.0;
+            }
+            else if (r + 1 == 2 || r + 1 == 4) {
+                ticketType = "Gold";
+                price = 15.0;
+            }
+
+            screening.seatingArrangement[r][c] = Seat(r + 1, c + 1, 'A', ticketType, price); // 'A' for Available
         }
     }
 }
@@ -130,23 +143,25 @@ void CinemaSelection::displayScreenings() const {
             const Screening& screening = hall.screenings[j];
             std::cout << "     " << (j + 1) << ". " << screening.movieTitle << " at " << screening.showTime << '\n';
         }
+
     }
 }
 
 void CinemaSelection::displaySeatingChart(const Screening& screening) const {
     std::cout << "\nSeating Chart ('A' = Available, 'R' = Reserved):\n";
-    std::cout << "   ";
+    std::cout << "    ";
     for (size_t col = 0; col < screening.seatingArrangement[0].size(); ++col) {
-        std::cout << col + 1 << "  ";
+        std::cout <<"  " << col + 1 ;
     }
     std::cout << "\n";
 
     for (size_t row = 0; row < screening.seatingArrangement.size(); ++row) {
-        std::cout << "R" << row + 1 << " ";
+        // Display row number and ticket type
+        std::cout << "R" << row + 1 << " " << screening.seatingArrangement[row][0].ticketType.substr(0, 1) << " ";
         for (size_t col = 0; col < screening.seatingArrangement[row].size(); ++col) {
             std::cout << " " << screening.seatingArrangement[row][col].status << " ";
         }
-        std::cout << "\n";
+        std::cout << "  - " << screening.seatingArrangement[row][0].ticketType << " ($" << std::fixed << std::setprecision(2) << screening.seatingArrangement[row][0].price << ")\n";
     }
 }
 
@@ -229,6 +244,7 @@ bool CinemaSelection::makeReservation() {
     // === Seating Selection Logic ===
     std::vector<std::pair<int, int>> seatsToReserve;
     int numSeats;
+    double totalCost = 0.0;
 
     bool seatsSelectedSuccessfully = false;
     while (!seatsSelectedSuccessfully) {
@@ -260,6 +276,13 @@ bool CinemaSelection::makeReservation() {
         }
     }
     // === End of Seating Selection Logic ===
+
+    // Calculate total cost
+    for (const auto& seat : seatsToReserve) {
+        totalCost += selectedScreening.seatingArrangement[seat.first - 1][seat.second - 1].price;
+    }
+
+    std::cout << "\nTotal cost for " << seatsToReserve.size() << " seat(s): $" << std::fixed << std::setprecision(2) << totalCost << '\n';
 
     std::cout << "\nChoose payment method:\n";
     std::cout << "1. Cash (Pay at cinema)\n";
@@ -304,9 +327,10 @@ bool CinemaSelection::makeReservation() {
     std::cout << "Time: " << currentReservation.screening.showTime << '\n';
     std::cout << "Seats Reserved: ";
     for (const auto& seat : seatsToReserve) {
-        std::cout << "R" << seat.first << "C" << seat.second << " ";
+        std::cout << "R" << seat.first << "C" << seat.second << " (" << selectedScreening.seatingArrangement[seat.first - 1][seat.second - 1].ticketType << ") ";
     }
     std::cout << '\n';
+    std::cout << "Total Cost: $" << std::fixed << std::setprecision(2) << totalCost << '\n';
     std::cout << "Payment Method: " << currentReservation.paymentMethod << '\n';
 
     return true;
