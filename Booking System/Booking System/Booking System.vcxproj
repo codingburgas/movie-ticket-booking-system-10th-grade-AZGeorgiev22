@@ -128,13 +128,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="Authentication.cpp" />
     <ClCompile Include="cinemaSelection.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menus.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Authentication.h" />
     <ClInclude Include="Cinema.h" />
     <ClInclude Include="cinemaSelection.h" />
+    <ClInclude Include="Menus.h" />
     <ClInclude Include="Reservation.h" />
     <ClInclude Include="Seat.h" />
     <ClInclude Include="User.h" />
