@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{53642f67-b828-4f0f-8f5d-16d8ec163cd9}</ProjectGuid>
-    <RootNamespace>BookingSystem</RootNamespace>
+    <ProjectGuid>{e6d92676-b297-404e-a098-efeb8dd2dfdb}</ProjectGuid>
+    <RootNamespace>SelectionCinema</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Menu</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Application (.lib)</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -71,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -127,28 +129,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Admin.cpp" />
-    <ClCompile Include="Authentication.cpp" />
-    <ClCompile Include="CinemaSelection.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menus.cpp" />
-    <ClCompile Include="User.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Authentication.h" />
-    <ClInclude Include="Cinema.h" />
-    <ClInclude Include="CinemaSelection.h" />
-    <ClInclude Include="Menus.h" />
-    <ClInclude Include="Reservation.h" />
-    <ClInclude Include="Seat.h" />
-    <ClInclude Include="User.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SelectionCinema\SelectionCinema.vcxproj">
-      <Project>{e6d92676-b297-404e-a098-efeb8dd2dfdb}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

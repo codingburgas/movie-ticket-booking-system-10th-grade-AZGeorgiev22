@@ -402,5 +402,4 @@ void CinemaSelection::searchMovies() {
     }
 }
 
-// === Admin Functions ===
 
