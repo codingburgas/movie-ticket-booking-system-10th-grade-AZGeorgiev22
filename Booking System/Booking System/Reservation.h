@@ -1,6 +1,4 @@
-#ifndef RESERVATION_H
-#define RESERVATION_H
-
+#pragma once
 #include <string>
 #include "Cinema.h"
 
@@ -11,4 +9,3 @@ struct Reservation {
     std::string paymentMethod;
 };
 
-#endif // RESERVATION_H

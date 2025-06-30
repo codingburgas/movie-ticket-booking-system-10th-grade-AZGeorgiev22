@@ -1,9 +1,8 @@
-#ifndef CINEMA_H
-#define CINEMA_H
+#pragma once
 
 #include <string>
 #include <vector>
-#include "Seat.h" // Include the new Seat header
+#include "Seat.h" 
 
 struct Screening {
     std::string movieTitle;
@@ -11,7 +10,7 @@ struct Screening {
     std::string genre;
     std::string releaseDate;
     std::string showTime;
-    std::vector<std::vector<Seat>> seatingArrangement; // 2D vector for seating
+    std::vector<std::vector<Seat>> seatingArrangement; // 2D vector for seatig
 };
 
 struct Hall {
@@ -25,4 +24,3 @@ public:
     std::vector<Hall> halls;
 };
 
-#endif // CINEMA_H

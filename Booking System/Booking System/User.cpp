@@ -1,8 +1,7 @@
 #include "User.h"
 #include <iostream>
 #include <fstream>
-#include <limits> // For std::numeric_limits
-
+#include <limits> 
 using namespace std;
 
 void handleUserAuthentication() {
@@ -20,13 +19,13 @@ void handleUserAuthentication() {
             continue;
         }
 
-        // --- Admin backdoor login ---
+        //  Admin backdoor login 
         if (choice == 740) {
             cout << "Admin access granted!\n";
             successful = true;
             return; // Exit the function to proceed to the main menu as admin
         }
-        // --- End of admin backdoor ---
+        //  End of admin backdoor 
 
         system("cls");
 

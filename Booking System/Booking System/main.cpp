@@ -19,10 +19,8 @@ int main() {
         if (isAdmin) {
             // If admin, go to the admin menu
             handleAdminMenu(cinemaSelector);
-            // After exiting the admin menu, the loop continues and goes back to authentication
-            // so the user has to log in again.
-        }
-        else {
+            // After exiting the admin menu, the loop continues and goes back to authentication            
+        }else {
             // If regular user, go to the user menu
             handleUserMenu(cinemaSelector);
             // The user menu has an exit option that will break the main loop
@@ -49,12 +47,12 @@ bool handleUserAuthenticationAndCheckAdmin() {
             continue;
         }
 
-        // --- Admin backdoor login ---
+        //  Admin backdoor login 
         if (choice == 740) {
             std::cout << "Admin access granted!\n";
             return true; // Return true for admin
         }
-        // --- End of admin backdoor ---
+        //  End of admin backdoor 
 
         system("cls");
 
@@ -166,9 +164,6 @@ void handleUserMenu(CinemaSelection& cinemaSelector) {
             cinemaSelector.searchMovies();
         }
         else if (option == 3) {
-            std::cout << "Goodbye!\n";
-            // This is where the user exits the program, so we don't need to return to login.
-            // Returning from main will end the program.
             break;
         }
         else {

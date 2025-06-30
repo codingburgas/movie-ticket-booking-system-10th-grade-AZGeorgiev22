@@ -1,8 +1,8 @@
 #include "CinemaSelection.h"
 #include <iostream>
 #include <algorithm>
-#include <limits> // For std::numeric_limits
-#include <iomanip> // For std::fixed and std::setprecision
+#include <limits> 
+#include <iomanip> 
 
 // Helper function to initialize a seating arrangement with ticket types and prices
 void CinemaSelection::initializeSeating(Screening& screening, int rows, int cols) {

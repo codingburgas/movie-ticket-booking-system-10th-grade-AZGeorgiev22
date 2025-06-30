@@ -1,13 +1,11 @@
-#ifndef SEAT_H
-#define SEAT_H
-
+#pragma once
 #include <string>
 
 struct Seat {
     int row;
     int column;
-    char status; // 'A' for Available, 'R' for Reserved
-    std::string ticketType; // e.g., "Silver", "Gold", "Platinum"
+    char status; // A available  R reserved
+    std::string ticketType; // Silve, Gold, Platinum
     double price;
 
     // Default constructor
@@ -17,4 +15,3 @@ struct Seat {
     Seat(int r, int c, char s, const std::string& type, double p) : row(r), column(c), status(s), ticketType(type), price(p) {}
 };
 
-#endif // SEAT_H

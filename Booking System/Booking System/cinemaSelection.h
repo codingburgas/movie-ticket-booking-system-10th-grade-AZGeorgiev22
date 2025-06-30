@@ -1,6 +1,4 @@
-#ifndef CINEMASELECTION_H
-#define CINEMASELECTION_H
-
+#pragma once
 #include <vector>
 #include <string>
 #include "Cinema.h"
@@ -20,7 +18,7 @@ public:
     // Admin functions
     void addMovie();
     void deleteMovie();
-    void updateShow(); // Renamed from updateMovie to be more clear
+    void updateShow(); 
     void addShow();
     void deleteShow();
 
@@ -41,4 +39,3 @@ private:
         const std::string& releaseDate) const;
 };
 
-#endif // CINEMASELECTION_H
