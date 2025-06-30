@@ -1,6 +1,7 @@
 #include "User.h"
 #include <iostream>
 #include <fstream>
+#include <limits> // For std::numeric_limits
 
 using namespace std;
 
@@ -11,6 +12,15 @@ void handleUserAuthentication() {
     while (!successful) {
         cout << "1. Register\n2. Login\nChoose an option: ";
         cin >> choice;
+
+        if (cin.fail()) {
+            cout << "Invalid input. Please enter a number.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        system("cls");
 
         if (choice == 1) {
             string username, password;
@@ -37,32 +47,41 @@ void handleUserAuthentication() {
             cin >> password;
             system("cls");
 
+            // Admin login check
+            if (username == "admin" && password == "admin123") { // Changed from a number to a string for better security
+                cout << "Admin login successful! You have access to admin functions.\n";
+                successful = true;
+                return; // Exit the function to proceed to the main menu as admin
+            }
+
             ifstream inFile("users.txt");
             if (!inFile) {
                 cout << "Error opening file!" << endl;
-                return;
+                // If file doesn't exist, allow admin login to still work
+                if (username == "admin" && password == "admin123") {
+                    successful = true;
+                    return;
+                }
+                cout << "Please register first.\n";
+                continue;
             }
 
             string storedUsername, storedPassword;
             bool found = false;
             while (inFile >> storedUsername >> storedPassword) {
                 if (storedUsername == username && storedPassword == password) {
-                    inFile.close();
-                    cout << "Login successful!" << endl;
-                    successful = true;
                     found = true;
                     break;
                 }
             }
             inFile.close();
 
-            if (!found) {
+            if (found) {
+                cout << "Login successful!" << endl;
+                successful = true;
+            }
+            else {
                 cout << "Invalid username or password! Please try again." << endl;
-#ifdef _WIN32
-                system("CLS");
-#else
-                system("clear");
-#endif
             }
         }
         else {

@@ -15,19 +15,23 @@ public:
     void displayScreenings() const;
     bool makeReservation();
     std::string getSelectedCinemaName() const;
-
     void searchMovies();
+
+    // Admin functions
+    void addMovie();
+    void deleteMovie();
+    void updateShow(); // Renamed from updateMovie to be more clear
+    void addShow();
+    void deleteShow();
 
 private:
     std::vector<Cinema> cinemaList;
     int selectedCinemaIndex;
     Reservation currentReservation;
 
-    // New helper function to initialize seating
+    // Helper functions
     void initializeSeating(Screening& screening, int rows, int cols);
-    // New helper function to display seating
     void displaySeatingChart(const Screening& screening) const;
-    // New helper function for validating and reserving seats
     bool reserveSeats(Screening& screening, const std::vector<std::pair<int, int>>& selectedSeats);
 
     bool matchesCriteria(const Screening& screening,
