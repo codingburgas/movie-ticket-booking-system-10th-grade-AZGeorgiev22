@@ -569,8 +569,6 @@ void CinemaSelection::addMovie() {
     std::getline(std::cin, newMovie.releaseDate);
 
     // This function adds a new movie, but doesn't add it as a show to any hall.
-    // It's better to add a show, which automatically includes movie details.
-    // I'll add a show function that takes movie details, as it's more practical.
     std::cout << "Movie '" << newMovie.movieTitle << "' added to the system. You can now add a show for it.\n";
 }
 
@@ -585,7 +583,7 @@ void CinemaSelection::deleteMovie() {
     bool found = false;
     for (auto& cinema : cinemaList) {
         for (auto& hall : cinema.halls) {
-            // Use remove_if to find and remove all screenings with the given movie title
+            //  remove_if  finds and removes all screenings with the given movie title
             auto it = std::remove_if(hall.screenings.begin(), hall.screenings.end(),
                 [&](const Screening& screening) {
                     if (screening.movieTitle == movieTitleToDelete) {
