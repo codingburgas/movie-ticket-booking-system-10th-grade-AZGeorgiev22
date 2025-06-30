@@ -5,6 +5,7 @@
 #include <string>
 #include "Cinema.h"
 #include "Reservation.h"
+#include "Seat.h"
 
 class CinemaSelection {
 public:
@@ -21,6 +22,13 @@ private:
     std::vector<Cinema> cinemaList;
     int selectedCinemaIndex;
     Reservation currentReservation;
+
+    // New helper function to initialize seating
+    void initializeSeating(Screening& screening, int rows, int cols);
+    // New helper function to display seating
+    void displaySeatingChart(const Screening& screening) const;
+    // New helper function for validating and reserving seats
+    bool reserveSeats(Screening& screening, const std::vector<std::pair<int, int>>& selectedSeats);
 
     bool matchesCriteria(const Screening& screening,
         const std::string& title,

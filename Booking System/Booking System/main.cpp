@@ -14,6 +14,7 @@ int main() {
         system("cls");
 
 
+
         if (option == 1) {
             cinemaSelector.selectCinema();
 

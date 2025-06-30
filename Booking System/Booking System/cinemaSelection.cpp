@@ -1,6 +1,17 @@
 #include "CinemaSelection.h"
 #include <iostream>
 #include <algorithm>
+#include <limits> // For std::numeric_limits
+
+// Helper function to initialize a seating arrangement
+void CinemaSelection::initializeSeating(Screening& screening, int rows, int cols) {
+    screening.seatingArrangement.resize(rows, std::vector<Seat>(cols));
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            screening.seatingArrangement[r][c] = Seat(r + 1, c + 1, 'A'); // 'A' for Available
+        }
+    }
+}
 
 CinemaSelection::CinemaSelection() {
     cinemaList = {
@@ -68,6 +79,15 @@ CinemaSelection::CinemaSelection() {
         }
     };
     selectedCinemaIndex = -1;
+
+    // Initialize seating for all screenings
+    for (auto& cinema : cinemaList) {
+        for (auto& hall : cinema.halls) {
+            for (auto& screening : hall.screenings) {
+                initializeSeating(screening, 5, 10); // 5 rows, 10 columns for all halls
+            }
+        }
+    }
 }
 
 void CinemaSelection::displayCinemas() const {
@@ -113,14 +133,77 @@ void CinemaSelection::displayScreenings() const {
     }
 }
 
+void CinemaSelection::displaySeatingChart(const Screening& screening) const {
+    std::cout << "\nSeating Chart ('A' = Available, 'R' = Reserved):\n";
+    std::cout << "   ";
+    for (size_t col = 0; col < screening.seatingArrangement[0].size(); ++col) {
+        std::cout << col + 1 << "  ";
+    }
+    std::cout << "\n";
+
+    for (size_t row = 0; row < screening.seatingArrangement.size(); ++row) {
+        std::cout << "R" << row + 1 << " ";
+        for (size_t col = 0; col < screening.seatingArrangement[row].size(); ++col) {
+            std::cout << " " << screening.seatingArrangement[row][col].status << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+bool CinemaSelection::reserveSeats(Screening& screening, const std::vector<std::pair<int, int>>& selectedSeats) {
+    // A vector to hold seats that are invalid or already reserved
+    std::vector<std::pair<int, int>> invalidSeats;
+    std::vector<std::pair<int, int>> reservedSeats;
+
+    // First, check all seats for validity and availability without changing the state
+    for (const auto& seat : selectedSeats) {
+        int row = seat.first;
+        int col = seat.second;
+
+        // Check if the seat is within bounds
+        if (row < 1 || static_cast<size_t>(row) > screening.seatingArrangement.size() ||
+            col < 1 || static_cast<size_t>(col) > screening.seatingArrangement[0].size()) {
+            invalidSeats.push_back({ row, col });
+        }
+        // Check if the seat is already reserved
+        else if (screening.seatingArrangement[row - 1][col - 1].status == 'R') {
+            reservedSeats.push_back({ row, col });
+        }
+    }
+
+    // Report all issues at once
+    if (!invalidSeats.empty() || !reservedSeats.empty()) {
+        if (!invalidSeats.empty()) {
+            std::cout << "Error: The following seats are invalid:\n";
+            for (const auto& seat : invalidSeats) {
+                std::cout << "  - R" << seat.first << "C" << seat.second << '\n';
+            }
+        }
+        if (!reservedSeats.empty()) {
+            std::cout << "Error: The following seats are already reserved:\n";
+            for (const auto& seat : reservedSeats) {
+                std::cout << "  - R" << seat.first << "C" << seat.second << '\n';
+            }
+        }
+        std::cout << "Please select different seats.\n";
+        return false;
+    }
+
+    // If all seats are valid and available, mark them as reserved
+    for (const auto& seat : selectedSeats) {
+        screening.seatingArrangement[seat.first - 1][seat.second - 1].status = 'R';
+    }
+
+    return true;
+}
+
 bool CinemaSelection::makeReservation() {
     if (selectedCinemaIndex < 0 || selectedCinemaIndex >= static_cast<int>(cinemaList.size())) {
         std::cout << "No cinema selected. Cannot make reservation.\n";
         return false;
     }
 
-    const Cinema& cinema = cinemaList[selectedCinemaIndex];
-
+    Cinema& cinema = cinemaList[selectedCinemaIndex]; // Use non-const reference
     int hallChoice = 0;
     int movieChoice = 0;
 
@@ -131,7 +214,7 @@ bool CinemaSelection::makeReservation() {
         return false;
     }
 
-    const Hall& hall = cinema.halls[hallChoice - 1];
+    Hall& hall = cinema.halls[hallChoice - 1]; // Use non-const reference
 
     std::cout << "Select a movie by number (1-" << hall.screenings.size() << "): ";
     std::cin >> movieChoice;
@@ -141,7 +224,42 @@ bool CinemaSelection::makeReservation() {
         return false;
     }
 
-    Screening selectedScreening = hall.screenings[movieChoice - 1];
+    Screening& selectedScreening = hall.screenings[movieChoice - 1]; // Use non-const reference
+
+    // === Seating Selection Logic ===
+    std::vector<std::pair<int, int>> seatsToReserve;
+    int numSeats;
+
+    bool seatsSelectedSuccessfully = false;
+    while (!seatsSelectedSuccessfully) {
+        displaySeatingChart(selectedScreening);
+        std::cout << "\nHow many seats would you like to reserve? ";
+        std::cin >> numSeats;
+
+        if (numSeats <= 0) {
+            std::cout << "Invalid number of seats.\n";
+            std::cin.clear(); // Clear error flags
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard bad input
+            continue;
+        }
+
+        seatsToReserve.clear(); // Clear previous selections
+        std::cout << "Enter the row and column of each seat (e.g., '1 5' for row 1, column 5):\n";
+        for (int i = 0; i < numSeats; ++i) {
+            int row, col;
+            std::cout << "Seat " << i + 1 << ": ";
+            std::cin >> row >> col;
+            seatsToReserve.push_back({ row, col });
+        }
+        system("cls");
+
+        // Attempt to reserve the seats. If it fails, the loop continues.
+        seatsSelectedSuccessfully = reserveSeats(selectedScreening, seatsToReserve);
+        if (!seatsSelectedSuccessfully) {
+            std::cout << "Please re-select your seats.\n";
+        }
+    }
+    // === End of Seating Selection Logic ===
 
     std::cout << "\nChoose payment method:\n";
     std::cout << "1. Cash (Pay at cinema)\n";
@@ -157,7 +275,7 @@ bool CinemaSelection::makeReservation() {
     }
     else if (paymentOption == 2) {
         std::string cardNumber, expiryDate, cvv;
-        std::cin.ignore();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
         std::cout << "Enter card number: ";
         std::getline(std::cin, cardNumber);
         std::cout << "Enter expiry date (MM/YY): ";
@@ -184,10 +302,16 @@ bool CinemaSelection::makeReservation() {
     std::cout << "Hall: " << currentReservation.hallName << '\n';
     std::cout << "Movie: " << currentReservation.screening.movieTitle << '\n';
     std::cout << "Time: " << currentReservation.screening.showTime << '\n';
+    std::cout << "Seats Reserved: ";
+    for (const auto& seat : seatsToReserve) {
+        std::cout << "R" << seat.first << "C" << seat.second << " ";
+    }
+    std::cout << '\n';
     std::cout << "Payment Method: " << currentReservation.paymentMethod << '\n';
 
     return true;
 }
+
 std::string CinemaSelection::getSelectedCinemaName() const {
     if (selectedCinemaIndex >= 0 && selectedCinemaIndex < static_cast<int>(cinemaList.size())) {
         return cinemaList[selectedCinemaIndex].name;
@@ -210,7 +334,7 @@ bool CinemaSelection::matchesCriteria(const Screening& screening,
 }
 
 void CinemaSelection::searchMovies() {
-    std::cin.ignore(); // Clear input buffer before getline
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
 
     std::string title, language, genre, releaseDate;
 
@@ -225,6 +349,7 @@ void CinemaSelection::searchMovies() {
 
     std::cout << "Enter release date to search (YYYY-MM-DD, leave empty for any): ";
     std::getline(std::cin, releaseDate);
+    system("cls");
 
     bool foundAny = false;
 

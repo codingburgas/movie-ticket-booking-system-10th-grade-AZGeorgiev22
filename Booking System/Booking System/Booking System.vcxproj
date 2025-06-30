@@ -138,6 +138,7 @@
     <ClInclude Include="Cinema.h" />
     <ClInclude Include="cinemaSelection.h" />
     <ClInclude Include="Reservation.h" />
+    <ClInclude Include="Seat.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

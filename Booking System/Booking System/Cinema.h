@@ -3,13 +3,15 @@
 
 #include <string>
 #include <vector>
+#include "Seat.h" // Include the new Seat header
 
 struct Screening {
     std::string movieTitle;
     std::string language;
     std::string genre;
-    std::string releaseDate;  // Format: YYYY-MM-DD or any consistent format
+    std::string releaseDate;
     std::string showTime;
+    std::vector<std::vector<Seat>> seatingArrangement; // 2D vector for seating
 };
 
 struct Hall {
