@@ -1,4 +1,5 @@
 #include "Menus.h"
+#include "Authentication.h"
 #include <iostream>
 #include <cstdlib> 
 
@@ -69,7 +70,8 @@ void handleUserMenu(CinemaSelection& cinemaSelector) {
             cinemaSelector.searchMovies();
         }
         else if (option == 3) {
-            break; // Break out of the user loop
+            handleUserAuthenticationAndCheckAdmin();
+
         }
         else {
             std::cout << "Invalid option. Try again.\n";

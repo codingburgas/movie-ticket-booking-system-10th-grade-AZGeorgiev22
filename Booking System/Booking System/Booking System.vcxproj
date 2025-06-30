@@ -133,7 +133,6 @@
     <ClCompile Include="CinemaSelection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menus.cpp" />
-    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Authentication.h" />
